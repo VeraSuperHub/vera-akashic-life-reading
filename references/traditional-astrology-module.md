@@ -1,10 +1,10 @@
 # Traditional Astrology Module
 
-Use this module when the user asks for Gu Zhan, Traditional astrology, traditional Western astrology, Hellenistic-style astrology, or a classical astrology layer on top of modern Western astrology.
+Use this module when the user asks for traditional Western astrology, Hellenistic-style astrology, classical astrology, ancient astrology, sect, lots, or annual profections on top of modern Western astrology.
 
 ## Scope
 
-`scripts/astro_profile.py` can emit a `traditional_western` block when `systems` includes `traditional`, `hellenistic`, `ancient`, or `Gu Zhan`.
+`scripts/astro_profile.py` can emit a `traditional_western` block when `systems` includes `traditional`, `hellenistic`, or `ancient`.
 
 The deterministic layer includes:
 
@@ -26,11 +26,11 @@ The helper does not currently calculate:
 - Zodiacal releasing.
 - Medieval reception chains beyond basic rulership/dignity.
 
-If the user needs those, ask for a verified Gu Zhan chart or treat the reading as partial.
+If the user needs those, ask for a verified traditional Western astrology chart or treat the reading as partial.
 
 ## Interpretation Use
 
-Use Gu Zhan as a condition-and-timing layer, not as a fate verdict.
+Use traditional Western astrology as a condition-and-timing layer, not as a fate verdict.
 
 - Sect can qualify how easily a planet expresses its traditional role.
 - Essential dignity can qualify whether a planet has stable authority, strain, or mixed condition.
@@ -41,11 +41,11 @@ Use Gu Zhan as a condition-and-timing layer, not as a fate verdict.
 
 ## Cross-System Use
 
-Gu Zhan should not override modern Western astrology or Vedic. Use it to sharpen the question:
+Traditional Western astrology should not override modern Western astrology or Vedic astrology. Use it to sharpen the question:
 
 - Modern astrology can describe psychological patterning.
-- Gu Zhan can describe condition, visibility, and time-lord emphasis.
-- Vedic can describe sidereal lunar/nakshatra and dasha context.
+- Traditional Western astrology can describe condition, visibility, and time-lord emphasis.
+- Vedic astrology can describe sidereal lunar/nakshatra and dasha context.
 
 When these layers disagree, do not force them into one answer. Say which layer is doing which job.
 

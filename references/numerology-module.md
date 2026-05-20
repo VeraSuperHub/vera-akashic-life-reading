@@ -4,7 +4,7 @@ Use numerology as an optional supplemental lens. It should never override verifi
 
 ## When To Include
 
-- The user asks for numerology, life path, birthday number, name number, or a full multi-system reading.
+- The user asks for numerology, life path, birthday number, name number, or a multi-system reading.
 - The chart systems show a tension that numerology can name cleanly, such as private seeker versus public builder.
 - The user only has name and birth date and wants a partial reflective reading.
 

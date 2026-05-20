@@ -16,50 +16,35 @@ A shallow reading would say:
 
 "The BaZi lacks fire, so the person needs to add fire."
 
-That is too flat, and it also risks mixing systems. BaZi Fire and Western fire signs are not the same technical element. Western astrology shows a fire-like archetypal signature as strong, dignified, and concentrated. The better synthesis is:
+That is too flat, and it also risks mixing systems. BaZi Fire phase and Western fire signs are not the same technical element. Western astrology shows a fire-like archetypal signature as strong, dignified, and concentrated. The better synthesis is:
 
-"BaZi Fire is not visible in the four-pillar layer, but the astrology layer shows strong fire-like expression signatures. Read the cross-system tension as containment, delay, privatization, or a need for a trustworthy expression channel."
+"BaZi Fire phase is not visible in the four-pillar layer, but the astrology layer shows strong fire-like expression signatures. Read the cross-system tension as containment, delay, privatization, or a need for a trustworthy expression channel."
 
 ## Corrected Thesis
 
 This chart can be read as a deep-water and growing-wood nature that carries a powerful analogous fire signature in another symbolic layer. The life lesson is not to import a missing BaZi element from outside. It is to release an already-present creative force into a form the body can tolerate and the world can receive.
 
-## Domain-Centered Sample
+## Free One-Record Sample
 
 ### Soul Identity
 
-You can read this synthetic chart as a tree growing from an underground spring while holding a lantern inside the trunk. The BaZi water gives memory and depth. The BaZi wood gives growth and teaching. The astrology fire signature gives visibility, courage, and creative heat, but it is not the same thing as BaZi Fire.
+You can read this synthetic chart as a tree growing from an underground spring while holding a lantern inside the trunk. The BaZi water gives memory and depth. The BaZi wood gives growth and teaching. The astrology fire signature gives visibility, courage, and creative heat, but it is not the same thing as BaZi Fire phase.
 
-### Past-Life Archetype
+### One Akashic Record
 
 Symbolically, this supports the image of a keeper of records who learned to protect knowledge before learning to publish it. The BaZi water/wood pattern supports the archive-and-growth image; the astrology fire-like correction supports the later task of stepping into visibility.
 
-### This-Life Contract
+### One Mission
 
-The task is to turn private depth into visible form. The person is not practicing "becoming creative" from zero. They are practicing letting existing heat travel through voice, work, body, and audience.
+Turn private depth into visible form. The person is not practicing "becoming creative" from zero. They are practicing letting existing heat travel through voice, work, body, and audience.
 
 ### Recurring Pattern
 
 The repeated loop is not lack of ideas. It is holding the work privately until it feels complete enough to survive contact. House-ruler concentration in the creative house changes the practical advice: create a release rhythm, not just a self-improvement plan.
 
-### Gifts
+### Next Practice
 
-Depth, synthesis, teaching, translation, and the ability to turn hidden structure into language.
-
-### Relationships
-
-The relationship practice is to let trusted people see the work before it is sealed and perfect. Feedback becomes a bridge, not an invasion.
-
-### Career And Mission
-
-The mission is strongest when research, teaching, and visible authorship become one system. Private mastery alone is unfinished; public form completes the circuit.
-
-### Practices
-
-- Publish one small version before it feels complete.
-- Track whether hesitation is about quality, safety, audience, or reach.
-- Use voice or live explanation when writing becomes too controlled.
-- Ask for feedback on resonance, not only correctness.
+Publish one small version before it feels complete, then ask for feedback on resonance rather than only correctness.
 
 ## Body-Response Prompt
 

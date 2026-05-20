@@ -6,7 +6,7 @@ Birth data and coordinates are sensitive. Handle them as private personal inform
 
 - Ask only for fields needed for the selected mode.
 - Do not ask for legal full name unless necessary; preferred name is enough for most readings.
-- For Western astrology/Vedic, ask for latitude/longitude only when the user wants ascendant, houses, or lagna; a city name can be enough if a trusted geocoder or user-provided coordinates are available.
+- For Western or Vedic astrology, ask for latitude/longitude only when the user wants ascendant, houses, or lagna; a city name can be enough if a trusted geocoder or user-provided coordinates are available.
 - Do not store birth data, raw helper payloads, or chart-output files unless the user explicitly requests an artifact or file.
 - When creating examples, use synthetic people.
 - When adapting from a prior reading, extract only reusable structure and style; do not copy names, exact birth data, locations, or identifiable life details into skill files.
@@ -24,6 +24,6 @@ Birth data and coordinates are sensitive. Handle them as private personal inform
 
 If time or place is missing:
 
-- Do not infer Hour Pillar, ascendant, houses, or exact timing.
+- Do not infer hour pillar, ascendant, houses, or exact timing.
 - Say which parts are unavailable.
 - Offer a partial reading based on verified fields only.
