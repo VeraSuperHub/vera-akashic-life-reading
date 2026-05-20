@@ -120,6 +120,11 @@ python3 scripts/numerology_profile.py --input birth.json
 
 ## Using as a Claude Code skill
 
+> [!IMPORTANT]
+> **Run this skill in a private (incognito) Claude session.**
+> Your birth date, birth time, location, and gender are sensitive personal data.
+> Incognito mode prevents this information from being saved to your conversation history.
+
 Install via the Claude Code skill registry or copy this folder into your skills directory.
 
 ```
