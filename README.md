@@ -2,86 +2,87 @@
 
 # 🔮 vera-akashic-life-reading
 
-**The first open-source multi-model life interpretation engine for Claude Code**
-
-*八字说没有火。星盘说火极旺。谁对？*
-*两个都对——这才是问题所在。*
-
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Python 3.8+](https://img.shields.io/badge/Python-3.8+-3776AB?logo=python&logoColor=white)](https://www.python.org)
-[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js&logoColor=white)](https://nodejs.org)
-[![Claude Skill](https://img.shields.io/badge/Claude-Skill-orange)](https://claude.ai)
-
-[English](#english) · [中文](#中文)
+[![Node.js 18+](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![Claude Skill](https://img.shields.io/badge/Claude-Skill-D97706)](https://claude.ai)
 
 </div>
 
 ---
 
-## English
+**八字说没有火。星盘说火旺至极。**
 
-### The problem with single-system readings
+这不是矛盾。这是你一直在做单一模型解读时，被系统性遗漏的信息。
 
-Every divination system is a model. A model compresses reality into its own coordinate space — and **every compression loses information**.
+**Your BaZi says no fire. Your birth chart says fire is dominant.**
 
-BaZi maps life into stems, branches, and five-phase dynamics.  
-A birth chart maps it into planets, houses, and aspects.  
-Zi Wei, Vedic, Traditional astrology each apply their own mapping.
+This isn't a contradiction. This is the information that gets lost every time you trust only one system.
 
-When a system says "fire is absent" — it means fire is absent **in its coordinate space**.  
-That tells you nothing about what the other four coordinate spaces show.
+---
 
-**Using five models isn't about getting five opinions. It's about recovering what each model loses.**
+## 为什么五个系统，不是一个
 
-### What this skill does differently
+每个命理系统都是模型。模型把人生压缩进自己的坐标系——压缩必然有损失。
 
-Most astrology tools pick one system and go deep. This skill treats each system as **one sensor in an ensemble** — and uses the places where sensors disagree to locate what no single sensor can see.
+八字能看到的，紫微看不完整。紫微能定位的，星盘解释不了原因。星盘里的心理动力，印占用 dasha 给出时间答案。古典占星告诉你这个力量当下的条件和可见度。
 
-```
-BaZi        → energy structure, timing cycles, elemental dynamics
-Zi Wei      → life arenas, role archetypes, palace emphasis
-Western     → psychological texture, expression, relational patterns
-Traditional → planet condition, visibility, symbolic timing (sect, lots, profections)
-Vedic       → lunar mind, nakshatra instinct, dasha background
-```
+**没有哪个系统是错的。每个系统都只是不完整的。**
 
-When all five point the same direction: **life main thread**.  
-When they diverge: **the divergence is the signal**, not noise.
+跨模型校正的价值不在于堆叠答案，在于找到任何单一模型无法单独回答的问题——然后用其他模型来回答它。
 
-### How it works
+---
 
-```
-Birth data (date · time · place)
-        │
-        ▼
-Deterministic calculators — scripts compute, LLM never invents
-  bazi_profile.py        → four pillars, structures, 大运/流年
-  ziwei_profile.mjs      → 12 palaces, stars, 四化, horoscopes  
-  astro_profile.py       → Western / Traditional / Vedic positions
-  numerology_profile.py  → Life Path, Birthday Number
-        │
-        ▼
-You confirm the chart
-        │
-        ▼
-Cross-system correction → Akashic reading
-```
+## Why five models, not one
 
-### Quick start
+Every divination system is a lossy compression of life. What BaZi sees, Zi Wei misses. What Zi Wei locates, Western astrology explains differently. What Western astrology frames psychologically, Vedic dasha answers temporally. What all of them describe in potential, Traditional astrology qualifies by condition.
+
+**No system is wrong. Every system is incomplete.**
+
+The point isn't to get five readings. It's to use the gaps between them.
+
+---
+
+## 这个技能做什么
+
+- 用**确定性脚本**计算五个命理系统的命盘数据，LLM 只做解读，不推算
+- 运行 Claude Code 后，自然语言触发，无需记命令
+- 八字和紫微**无需安装依赖**，引擎已内置，离线可用
+- 识别跨系统分歧，以校正而非堆叠为主要解读动作
+- 支持"我已有命盘数据"模式——不想重新算就直接解读
+
+## What this skill does
+
+- Runs **deterministic calculators** for all five systems — the LLM interprets, never invents chart facts
+- Natural language triggers inside Claude Code — no commands to memorize
+- BaZi and Zi Wei work **offline with zero installation** — engines are bundled
+- Detects cross-system divergence and uses it as the primary interpretation signal
+- Supports `verified-chart` mode — paste your existing chart data and skip recalculation
+
+---
+
+## 30 秒上手 / 30-Second Start
 
 ```bash
-# BaZi — no install needed, engine is bundled
+# 克隆 / Clone
+git clone https://github.com/VeraSuperHub/vera-akashic-life-reading.git
+
+# 八字（离线可用）/ BaZi (offline)
 python3 scripts/bazi_profile.py --input birth.json
 
-# Zi Wei — no install needed, engine is bundled
+# 紫微斗数（离线可用）/ Zi Wei (offline)
 node scripts/ziwei_profile.mjs --input birth.json
 
-# Western / Traditional / Vedic
+# 西占 + 古占 + 印占 / Western + Traditional + Vedic
 pip install pyswisseph
 python3 scripts/astro_profile.py --input birth.json
 
-# Numerology — no dependencies
+# 数字学 / Numerology
 python3 scripts/numerology_profile.py --input birth.json
+
+# 自检所有脚本 / Self-test everything
+python3 scripts/bazi_profile.py --self-test
+node scripts/ziwei_profile.mjs --self-test
 ```
 
 ```json
@@ -98,116 +99,51 @@ python3 scripts/numerology_profile.py --input birth.json
 }
 ```
 
-### Install as a Claude Code skill
+---
 
+## 在 Claude Code 里使用 / Using in Claude Code
+
+将本文件夹复制到 Claude Code 技能目录，或通过技能注册表安装。  
 Copy this folder into your Claude Code skills directory, or install via the skill registry.
 
-Trigger it naturally:
-
-> *"I want a full Akashic life reading combining BaZi, Zi Wei, and my birth chart"*  
-> *"I only have a birth date — give me a partial reading"*  
-> *"I already have my chart data from another app — interpret it"*
+```
+"帮我做一个完整的多模型灵魂课题解读，结合八字、紫微、星盘和印占"
+"I want a full Akashic reading combining BaZi, Zi Wei, and my birth chart"
+"只有生日没有时间，能做今生课题的简版吗？"
+"我已经有四柱和星盘数据了，直接解读"
+```
 
 ---
 
-## 中文
+## 五系统一览 / Five Systems
 
-### 单一系统的根本局限
-
-每一个命理系统都是一个**模型**。模型把现实压缩进自己的坐标系——**每一次压缩都必然有信息损失**。
-
-八字把人生压缩进天干、地支、五行的坐标系。  
-西洋星盘把它压缩进天体、宫位、相位的坐标系。  
-紫微斗数、印度占星、古典占星各有各的压缩方式。
-
-当一个系统说"命里没有火"——它的意思是**在它的坐标系里**没有火。  
-这完全不告诉你其他四个坐标系看到了什么。
-
-**用五个模型，不是为了得到五个意见，而是为了找回每个模型各自丢失的信息。**
-
-### 跨模型校正是核心动作
-
-大多数命理工具选一个系统然后走到底。这个技能把每个系统当作**集成模型里的一个传感器**——用传感器之间分歧的地方，定位任何单一传感器看不到的东西。
-
-```
-八字    → 气机结构、五行动力、大运/流年节律
-紫微    → 人生宫位、角色原型、宫位强调
-西洋    → 心理动力、表达方式、关系模式
-古典    → 行星状态、可见性、时间主（sect、福点、小限）
-印占    → 月亮心智、星宿本能、大运背景
-```
-
-所有系统指向同一方向：**人生主线**。  
-系统之间出现分歧：**分歧本身就是信号**，不是噪声。
-
-### 技能架构
-
-```
-出生信息（日期 · 时间 · 地点）
-        │
-        ▼
-确定性脚本计算 — 脚本算，LLM 不凭空推算
-  bazi_profile.py        → 四柱、结构、大运/流年
-  ziwei_profile.mjs      → 十二宫、主星、四化、流年运势
-  astro_profile.py       → 西占 / 古占 / 印占星位
-  numerology_profile.py  → 生命数字、生日数字
-        │
-        ▼
-你确认命盘
-        │
-        ▼
-跨模型校正 → 阿卡西解读
-```
-
-### 快速开始
-
-```bash
-# 八字 — 无需安装，引擎已内置
-python3 scripts/bazi_profile.py --input birth.json
-
-# 紫微斗数 — 无需安装，引擎已内置
-node scripts/ziwei_profile.mjs --input birth.json
-
-# 西占 / 古占 / 印占
-pip install pyswisseph
-python3 scripts/astro_profile.py --input birth.json
-
-# 数字学 — 无外部依赖
-python3 scripts/numerology_profile.py --input birth.json
-```
-
-### 五个系统，四个脚本
-
-| 系统 | 脚本 | 引擎 | 依赖 |
+| 系统 | 脚本 | 引擎 | 安装 |
 |---|---|---|---|
-| 八字 | `bazi_profile.py` | `lunar_python` | 已内置 MIT |
-| 紫微斗数 | `ziwei_profile.mjs` | `iztro` | 已内置 MIT |
-| 西占 + 古占 + 印占 | `astro_profile.py` | `pyswisseph` | 用户自装 |
-| 数字学 | `numerology_profile.py` | 无 | 无依赖 |
-
-### 作为 Claude Code 技能使用
-
-将本文件夹复制到你的 Claude Code 技能目录，或通过技能注册表安装。
-
-自然语言触发：
-
-> *"帮我做一个多模型灵魂课题解读，结合八字、星盘和紫微"*  
-> *"只有生日和时间，能做今生课题的简版吗？"*  
-> *"我已经有四柱和星盘数据，请直接解读"*  
-> *"我要完整版前世今生阿卡西记录"*
+| 八字 BaZi | `bazi_profile.py` | lunar_python | ✅ 已内置 / bundled |
+| 紫微斗数 Zi Wei | `ziwei_profile.mjs` | iztro | ✅ 已内置 / bundled |
+| 西占 + 古占 + 印占 | `astro_profile.py` | pyswisseph | 用户自装 / install separately |
+| 数字学 Numerology | `numerology_profile.py` | — | ✅ 无依赖 / no deps |
 
 ---
 
-## License
+## 版权 / License
 
 GPL-3.0 © [VeraSuperHub](https://github.com/VeraSuperHub)
 
-This project is licensed under the GNU General Public License v3.0.  
-Anyone who distributes or modifies this code must release their changes under the same license.
+修改和分发本项目的代码，必须以相同的 GPL-3.0 协议开源。  
+Anyone who modifies or distributes this code must release it under GPL-3.0.
 
-**Third-party engines:**
+内置引擎 `lunar_python` 和 `iztro` 保留其原始 MIT 协议。  
+Bundled engines `lunar_python` and `iztro` retain their original MIT licenses.
 
-- [lunar-python](https://github.com/6tail/lunar-python) by 6tail — MIT
-- [iztro](https://github.com/SylarLong/iztro) by SylarLong — MIT
-- [Swiss Ephemeris](https://www.astro.com/swisseph/) by Astrodienst — AGPL / commercial  
-  *(pyswisseph is not bundled; confirm license before commercial use)*
+`pyswisseph` 未随本项目分发，使用前请确认 Swiss Ephemeris 的 AGPL / 商业授权。  
+`pyswisseph` is not bundled. Confirm Swiss Ephemeris AGPL / commercial license before use.
+
+---
+
+<div align="center">
+
+**[VeraSuperHub](https://github.com/VeraSuperHub)** · 开源命理解读技能生态  
+Open-source divination skill ecosystem for domain experts
+
+</div>
