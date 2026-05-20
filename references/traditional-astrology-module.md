@@ -1,10 +1,10 @@
 # Traditional Astrology Module
 
-Use this module when the user asks for 古占, 古典占星, traditional Western astrology, Hellenistic-style astrology, or a classical astrology layer on top of modern 西占.
+Use this module when the user asks for Gu Zhan, Traditional astrology, traditional Western astrology, Hellenistic-style astrology, or a classical astrology layer on top of modern Western astrology.
 
 ## Scope
 
-`scripts/astro_profile.py` can emit a `traditional_western` block when `systems` includes `traditional`, `hellenistic`, `ancient`, or `古占`.
+`scripts/astro_profile.py` can emit a `traditional_western` block when `systems` includes `traditional`, `hellenistic`, `ancient`, or `Gu Zhan`.
 
 The deterministic layer includes:
 
@@ -26,11 +26,11 @@ The helper does not currently calculate:
 - Zodiacal releasing.
 - Medieval reception chains beyond basic rulership/dignity.
 
-If the user needs those, ask for a verified 古占 chart or treat the reading as partial.
+If the user needs those, ask for a verified Gu Zhan chart or treat the reading as partial.
 
 ## Interpretation Use
 
-Use 古占 as a condition-and-timing layer, not as a fate verdict.
+Use Gu Zhan as a condition-and-timing layer, not as a fate verdict.
 
 - Sect can qualify how easily a planet expresses its traditional role.
 - Essential dignity can qualify whether a planet has stable authority, strain, or mixed condition.
@@ -41,11 +41,11 @@ Use 古占 as a condition-and-timing layer, not as a fate verdict.
 
 ## Cross-System Use
 
-古占 should not override modern 西占 or 印占. Use it to sharpen the question:
+Gu Zhan should not override modern Western astrology or Vedic. Use it to sharpen the question:
 
 - Modern astrology can describe psychological patterning.
-- 古占 can describe condition, visibility, and time-lord emphasis.
-- 印占 can describe sidereal lunar/nakshatra and dasha context.
+- Gu Zhan can describe condition, visibility, and time-lord emphasis.
+- Vedic can describe sidereal lunar/nakshatra and dasha context.
 
 When these layers disagree, do not force them into one answer. Say which layer is doing which job.
 

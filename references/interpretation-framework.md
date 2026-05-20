@@ -6,11 +6,11 @@ Use this framework only after chart facts are verified or explicitly marked part
 
 Do not treat same-named elements as technically equivalent across systems.
 
-- BaZi uses the five phases: 木、火、土、金、水.
+- BaZi uses the five phases: Wood, Fire, Earth, Metal, Water.
 - Western astrology uses four elemental sign qualities: fire, earth, air, water.
 - Vedic/Jyotish also uses elemental and tattva language through its own sidereal and nakshatra framework.
 
-Cross-system correction is analogical. "BaZi lacks fire while astrology shows strong fire signatures" does not mean astrology supplies missing BaZi 火. It means one symbolic system shows weak or absent 火-phase mechanics while another system shows strong fire-like temperament, vitality, visibility, or expression signatures. Interpret the tension; do not merge the calculations.
+Cross-system correction is analogical. "BaZi lacks fire while astrology shows strong fire signatures" does not mean astrology supplies missing BaZi Fire. It means one symbolic system shows weak or absent Fire-phase mechanics while another system shows strong fire-like temperament, vitality, visibility, or expression signatures. Interpret the tension; do not merge the calculations.
 
 ## Cross-System Correction Patterns
 
@@ -19,7 +19,7 @@ Treat correction as the first synthesis move.
 1. **Element absence plus analogous chart strength.** If BaZi appears to lack an element but Western or Vedic astrology shows an analogous elemental theme strongly dignified, angular, or concentrated, do not frame it as simple deficiency. Read it as blocked access, containment, delayed release, a private channel, or a need to move that archetypal quality from inner potential into embodied expression.
 2. **Branch interactions plus house rulership.** If BaZi structures show a repeated directional theme and Western house rulers concentrate in one life arena, use the overlap as layered confirmation. Name the mechanics first, then translate them into one domain thesis.
 3. **Day master plus Ascendant or Lagna.** Use BaZi day master as core temperament and Western Ascendant or Vedic Lagna as presentation, survival style, and body-facing mask. Differences between them often explain why the person feels one way inside but is read differently outside.
-4. **Modern astrology plus 古占.** Use modern 西占 for psychological texture and 古占 for condition, visibility, sect, angularity, lots, and symbolic timing. If they point to the same arena, use 古占 to sharpen the "how/when/under what condition" question rather than to override the modern reading.
+4. **Modern astrology plus Gu Zhan.** Use modern Western astrology for psychological texture and Gu Zhan for condition, visibility, sect, angularity, lots, and symbolic timing. If they point to the same arena, use Gu Zhan to sharpen the "how/when/under what condition" question rather than to override the modern reading.
 5. **Numerology plus BaZi.** Use Life Path as purpose vector and BaZi day master/season as temperament and energy mechanics. A mismatch can be read as a productive tension, such as inner seeker versus outer builder, rather than a contradiction.
 6. **Zi Wei palace emphasis plus astrology houses.** When Zi Wei palaces and Western houses point to the same arena, combine them by domain: relationship, vocation, family inheritance, visibility, learning, or spiritual practice.
 
@@ -29,8 +29,8 @@ Do not force agreement. If systems conflict and no correction pattern is clear, 
 
 Before interpretation, check whether any exact timestamp was converted into a categorical label near a boundary.
 
-- **BaZi hour pillar:** if birth time is close to a two-hour boundary, the 时柱 can change after true-solar-time correction, timezone correction, or user-verified adjustment.
-- **胎元:** if the reading uses 胎元, ask whether the user wants to keep the unadjusted engine value or provide an adjusted/verified value. Premature birth and school-specific gestational assumptions can make this important.
+- **BaZi hour pillar:** if birth time is close to a two-hour boundary, the Hour Pillar can change after true-solar-time correction, timezone correction, or user-verified adjustment.
+- **Tai Yuan:** if the reading uses Tai Yuan, ask whether the user wants to keep the unadjusted engine value or provide an adjusted/verified value. Premature birth and school-specific gestational assumptions can make this important.
 - **Western astrology sign labels:** if a planet or angle is near 0 degrees or 30 degrees of a sign, avoid over-weighting the categorical sign label without confirmation.
 - **Western astrology house labels:** if a planet is near a house cusp, avoid treating the house assignment as stable across house systems or small time/location corrections.
 - **Zi Wei and Vedic timing:** if the birth time is close to a traditional time block, lagna, or divisional boundary, name the uncertainty and ask for a verified chart before making house-sensitive claims.
@@ -49,7 +49,7 @@ Default for cautious users, partial data, or first contact.
 
 ### Akashic-Full
 
-Use when the user explicitly asks for 阿卡西记录, 前世今生, soul-record style, or a complete symbolic narrative.
+Use when the user explicitly asks for Akashic records, past and present lives, soul-record style, or a complete symbolic narrative.
 
 - Begin with a symbolic disclaimer, then commit to a vivid narrative voice.
 - Use direct address and embodied metaphors grounded in verified chart facts.
@@ -65,9 +65,9 @@ Useful for calculation review or cautious interpretation.
 
 1. Chart anchor: name, calculation mode, confirmed chart facts, and uncertainty level.
 2. Core thesis: one cross-system synthesis.
-3. BaZi mechanics: day master, season, structures, auxiliary pillars, 大运/流年 when verified.
-4. Astrology mechanics: planets, houses, dignity, rulership, aspects, 古占 condition/timing markers, lagna/nakshatra/dasha when verified.
-5. Zi Wei mechanics: 命宫/身宫, palaces, stars, 四化, 大限/流年 when verified.
+3. BaZi mechanics: day master, season, structures, auxiliary pillars, Da Yun/Liu Nian when verified.
+4. Astrology mechanics: planets, houses, dignity, rulership, aspects, Gu Zhan condition/timing markers, lagna/nakshatra/dasha when verified.
+5. Zi Wei mechanics: Ming Gong/Shen Gong, palaces, stars, Si Hua, Da Xian/Liu Nian when verified.
 6. Akashic narrative: symbolic soul memory and recurring pattern.
 7. Practices: 3-5 grounded actions for the next 30-90 days.
 
@@ -86,19 +86,19 @@ Preferred for `akashic-full` mode.
 
 ## Mapping Guidance
 
-- 八字 day master and seasonal context can anchor temperament and life lesson.
-- 八字 structure facts such as 三会、三合/半合、六合、冲、刑、害、破 can anchor pattern dynamics, but treat them as chart mechanics to weigh, not standalone verdicts.
+- BaZi day master and seasonal context can anchor temperament and life lesson.
+- BaZi structure facts such as San Hui, San He/Ban He, Liu He, Chong, Xing, Hai, Po can anchor pattern dynamics, but treat them as chart mechanics to weigh, not standalone verdicts.
 - If a BaZi interaction includes an auxiliary pillar, name that interpretive weight explicitly: "the verified auxiliary layer supports..." rather than treating it exactly like a four-pillar-only structure.
-- 胎元、命宫、身宫 may be used when verified; name the source and avoid using one disputed auxiliary value as the whole reading's foundation.
+- Tai Yuan, Ming Gong, Shen Gong may be used when verified; name the source and avoid using one disputed auxiliary value as the whole reading's foundation.
 - Element balance can anchor growth needs, but avoid simplistic "missing element means bad" claims.
 - Ten gods can anchor relationship to authority, expression, resources, peers, and responsibility.
-- 大运 and 流年 may be used as timing context only when calculation is verified; distinguish long-cycle background from annual trigger themes.
-- 星盘 planets/signs/houses/aspects can anchor psychological themes only when provided by a real chart.
+- Da Yun and Liu Nian may be used as timing context only when calculation is verified; distinguish long-cycle background from annual trigger themes.
+- birth chart planets/signs/houses/aspects can anchor psychological themes only when provided by a real chart.
 - Essential dignity can modify the meaning of a planet: strong dignity may show available power even when another system seems to show absence.
 - House rulership can identify life arenas that act as a gravitational center when three or more house rulers land in the same house.
-- 古占 can add a traditional condition-and-timing layer: sect, whole-sign house placement, angularity, traditional rulership, Fortune/Spirit lots, and annual profections. Use it to qualify visibility, embodiment, intention, and time-lord emphasis; do not use it for deterministic event prediction.
-- 紫微命盘 can anchor palace-centered life arenas, main star archetypes, body/soul markers, 四化, 大限/流年 themes, and repeated palace emphases only after calculation settings are confirmed.
-- 印占 can anchor sidereal sign/nakshatra/lagna patterns and Vimshottari dasha timing only after ayanamsa, node choice, and house model are confirmed.
+- Gu Zhan can add a traditional condition-and-timing layer: sect, whole-sign house placement, angularity, traditional rulership, Fortune/Spirit lots, and annual profections. Use it to qualify visibility, embodiment, intention, and time-lord emphasis; do not use it for deterministic event prediction.
+- Zi Weibirth chart can anchor palace-centered life arenas, main star archetypes, body/soul markers, Si Hua, Da Xian/Liu Nian themes, and repeated palace emphases only after calculation settings are confirmed.
+- Vedic can anchor sidereal sign/nakshatra/lagna patterns and Vimshottari dasha timing only after ayanamsa, node choice, and house model are confirmed.
 - Name is used for tone and personalization, not as mathematical proof.
 
 ## Safety Style

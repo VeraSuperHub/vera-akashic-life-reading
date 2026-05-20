@@ -16,9 +16,9 @@ A shallow reading would say:
 
 "The BaZi lacks fire, so the person needs to add fire."
 
-That is too flat, and it also risks mixing systems. BaZi 火 and Western fire signs are not the same technical element. Western astrology shows a fire-like archetypal signature as strong, dignified, and concentrated. The better synthesis is:
+That is too flat, and it also risks mixing systems. BaZi Fire and Western fire signs are not the same technical element. Western astrology shows a fire-like archetypal signature as strong, dignified, and concentrated. The better synthesis is:
 
-"BaZi 火 is not visible in the four-pillar layer, but the astrology layer shows strong fire-like expression signatures. Read the cross-system tension as containment, delay, privatization, or a need for a trustworthy expression channel."
+"BaZi Fire is not visible in the four-pillar layer, but the astrology layer shows strong fire-like expression signatures. Read the cross-system tension as containment, delay, privatization, or a need for a trustworthy expression channel."
 
 ## Corrected Thesis
 
@@ -28,7 +28,7 @@ This chart can be read as a deep-water and growing-wood nature that carries a po
 
 ### Soul Identity
 
-You can read this synthetic chart as a tree growing from an underground spring while holding a lantern inside the trunk. The BaZi water gives memory and depth. The BaZi wood gives growth and teaching. The astrology fire signature gives visibility, courage, and creative heat, but it is not the same thing as BaZi 火.
+You can read this synthetic chart as a tree growing from an underground spring while holding a lantern inside the trunk. The BaZi water gives memory and depth. The BaZi wood gives growth and teaching. The astrology fire signature gives visibility, courage, and creative heat, but it is not the same thing as BaZi Fire.
 
 ### Past-Life Archetype
 

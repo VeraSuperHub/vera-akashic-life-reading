@@ -9,9 +9,9 @@ The strongest readings come from correction, not decoration. Before writing the 
 - Does one system seem to show absence while another shows analogous strength?
 - Does one system describe core temperament while another describes the public mask?
 - Does a branch structure point to one element or life rhythm while house rulership points to where it must be expressed?
-- Does timing from 大运/流年 or dasha describe background weather rather than an event guarantee?
+- Does timing from Da Yun/Liu Nian or dasha describe background weather rather than an event guarantee?
 
-When a correction appears, make it the thesis, but keep the systems distinct. Western fire/earth/water/air and BaZi 木/火/土/金/水 are not the same technical elements. For example: "BaZi 火 is not visible, but astrology shows strong fire-like expression signatures; read this as an access/release pattern, not as astrology replacing BaZi 火" is stronger and more accurate than "you need more fire."
+When a correction appears, make it the thesis, but keep the systems distinct. Western fire/earth/water/air and BaZi Wood/Fire/Earth/Metal/Water are not the same technical elements. For example: "BaZi Fire is not visible, but astrology shows strong fire-like expression signatures; read this as an access/release pattern, not as astrology replacing BaZi Fire" is stronger and more accurate than "you need more fire."
 
 ## Body-Response Practice
 
@@ -25,7 +25,7 @@ Do not present body response as proof. Treat it as the user's own resonance sign
 
 ## Domain-Centered Output
 
-Use this shape when the user asks for 阿卡西记录, 前世今生, soul record, or a full life-purpose reading:
+Use this shape when the user asks for Akashic records, past and present lives, soul record, or a full life-purpose reading:
 
 1. Soul Identity: one vivid image that integrates BaZi, astrology, Zi Wei, Vedic, and optional numerology.
 2. Past-Life Archetypes: 2-4 symbolic scenes, each tied to specific chart mechanics.
@@ -40,13 +40,13 @@ The reader usually cares about "what does this mean for my relationships, work, 
 
 ## Integration Pattern
 
-1. Start with a compact chart anchor: confirmed 八字, key 八字 structures, verified auxiliary facts such as 胎元 when available, modern astrology settings, 古占 settings, Zi Wei settings, Vedic settings, and optional numerology numbers.
-2. Name any boundary-sensitive facts before the thesis: near-hour-boundary birth times, 胎元 adjustment choice, sign cusps, house cusps, or school-specific settings.
+1. Start with a compact chart anchor: confirmed BaZi, key BaZi structures, verified auxiliary facts such as Tai Yuan when available, modern astrology settings, Gu Zhan settings, Zi Wei settings, Vedic settings, and optional numerology numbers.
+2. Name any boundary-sensitive facts before the thesis: near-hour-boundary birth times, Tai Yuan adjustment choice, sign cusps, house cusps, or school-specific settings.
 3. State one cross-system correction thesis in symbolic language, such as "deep storage becomes visible creation" or "inner depth needs public form."
-4. Use 八字 mechanics for energy structure: day master, season, branch combinations, hidden stems, ten-god emphasis, auxiliary pillars, 大运, and 流年 when verified.
-5. Use 紫微 as a palace-and-star layer when available: 命宫/身宫, main stars, 四化, 大限/流年, repeated palace emphasis.
-6. Use 西占 and 印占 as analogical correction layers: dignity, house rulership, aspects, lagna, nakshatra, and dasha can change the narrative from deficiency to containment, from fear to pacing, or from expression to distribution without claiming the systems calculate the same element.
-7. Use 古占 as a condition-and-timing layer: sect, angularity, traditional rulership, Fortune/Spirit lots, and annual profections can sharpen where the pattern becomes visible, embodied, intentional, or time-activated.
+4. Use BaZi mechanics for energy structure: day master, season, branch combinations, hidden stems, ten-god emphasis, auxiliary pillars, Da Yun, and Liu Nian when verified.
+5. Use Zi Wei as a palace-and-star layer when available: Ming Gong/Shen Gong, main stars, Si Hua, Da Xian/Liu Nian, repeated palace emphasis.
+6. Use Western astrology and Vedic as analogical correction layers: dignity, house rulership, aspects, lagna, nakshatra, and dasha can change the narrative from deficiency to containment, from fear to pacing, or from expression to distribution without claiming the systems calculate the same element.
+7. Use Gu Zhan as a condition-and-timing layer: sect, angularity, traditional rulership, Fortune/Spirit lots, and annual profections can sharpen where the pattern becomes visible, embodied, intentional, or time-activated.
 8. Use numerology only as an optional supplemental layer: Life Path for purpose vector, Birthday Number for outer role, and tension/confirmation against chart mechanics.
 9. Translate mechanics into life lessons: gifts, repeated loops, growth edge, relationship practice, and work/mission direction.
 10. Close with grounded practices for 30-90 days. Prefer actions that make the symbolic reading usable.
@@ -56,7 +56,7 @@ The reader usually cares about "what does this mean for my relationships, work, 
 - In `reflective` mode, use "can be read as", "suggests", "symbolically points to", and "a useful practice is".
 - In `akashic-full` mode, use direct address, vivid images, and stronger thesis statements after the symbolic disclaimer.
 - It is acceptable to use images such as water, forest, fire, gate, lock, bridge, mountain, archive, field, and vessel when they come from verified chart patterns.
-- It is acceptable to discuss 前世 or 阿卡西 as archetypal narrative, but label it as symbolic exploration rather than factual memory.
+- It is acceptable to discuss past lives or Akashic as archetypal narrative, but label it as symbolic exploration rather than factual memory.
 - It is acceptable to use numerology when the user asks for it, supplies it, or requests a full multi-system reading where it adds a distinct lens.
 
 ## Avoid
