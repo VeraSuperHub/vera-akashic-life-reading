@@ -1,0 +1,141 @@
+{
+  "positive": [
+    {
+      "prompt": "用我的八字和星盘生成阿卡西记录和今生课题。",
+      "expected_mode": "verified-chart-or-calculator",
+      "expected_behavior": [
+        "asks for missing birth time/place/settings before calculating chart-dependent claims",
+        "shows calculated or parsed chart facts for confirmation before interpretation",
+        "uses cross-system correction when one chart layer changes the meaning of another",
+        "offers reflective or akashic-full style depending on the user's request",
+        "keeps 阿卡西 language symbolic and non-deterministic"
+      ]
+    },
+    {
+      "prompt": "我有出生日期时间地点，帮我先算八字再做灵魂课题解读。",
+      "expected_mode": "bazi-calculator",
+      "expected_behavior": [
+        "runs or requests use of scripts/bazi_profile.py",
+        "shows 四柱, 日主, key 地支结构, and calculation notes before narrative",
+        "marks whether branch interactions involve verified auxiliary pillars such as 胎元",
+        "asks whether 胎元 should be kept as engine-calculated or adjusted/verified when 胎元 is used",
+        "flags birth times near Chinese-hour boundaries before interpreting 时柱",
+        "asks for gender only if 大运/流年 is requested"
+      ]
+    },
+    {
+      "prompt": "我已经有四柱和星盘，请根据这些做一个 Akashic reading。",
+      "expected_mode": "verified-chart",
+      "expected_behavior": [
+        "normalizes user-provided chart facts without recalculating from memory",
+        "records source/settings for the verified chart when available",
+        "does not invent missing houses, aspects, or auxiliary pillars"
+      ]
+    },
+    {
+      "prompt": "出生资料齐全，帮我加入紫微斗数一起做灵魂课题。",
+      "expected_mode": "ziwei-calculator",
+      "expected_behavior": [
+        "runs or requests use of scripts/ziwei_profile.mjs",
+        "records gender convention, 时辰 index, leap-month handling, and language",
+        "summarizes 命宫/身宫, major stars, 四化, 大限/流年 facts before interpretation"
+      ]
+    },
+    {
+      "prompt": "我想把印度占星的月亮星宿和大运也纳入解读。",
+      "expected_mode": "astrology-calculator",
+      "expected_behavior": [
+        "requires timezone plus latitude/longitude or verified 印占 data",
+        "records Lahiri ayanamsa, sidereal zodiac, node choice, house model, and dasha system",
+        "flags planets, angles, or house placements near sign or house boundaries before making categorical claims",
+        "names the optional Swiss Ephemeris dependency and license boundary if calculation is requested"
+      ]
+    },
+    {
+      "prompt": "在西占和印占之外，我还想加古占，看sect、福点和年度小限。",
+      "expected_mode": "astrology-calculator",
+      "expected_behavior": [
+        "runs or requests use of scripts/astro_profile.py with a traditional or 古占 system alias",
+        "records tropical zodiac, whole-sign house model, traditional seven-planet rulership, sect, lot formula, and annual profection target dates",
+        "frames 古占 as condition and symbolic timing context rather than deterministic event prediction",
+        "names omitted techniques such as bounds, decans, fixed stars, primary directions, and zodiacal releasing when relevant"
+      ]
+    },
+    {
+      "prompt": "我的出生时间很接近时辰交界，星盘里也有行星在0度附近，先帮我确认哪些地方需要调整。",
+      "expected_mode": "boundary-check",
+      "expected_behavior": [
+        "identifies timestamp-to-category conversions as lossy",
+        "asks whether to keep civil time, apply true-solar-time/location correction, test adjacent categories, or use the user's verified chart",
+        "does not generate a final interpretation until boundary-sensitive chart facts are confirmed"
+      ]
+    },
+    {
+      "prompt": "我要完整版前世今生阿卡西记录，请结合八字、星盘、印占、紫微和数字学。",
+      "expected_mode": "full-calculator",
+      "expected_behavior": [
+        "runs or requests each requested calculator in sequence and combines the outputs into one unified chart summary",
+        "calculates or requests verified data for each requested system instead of freehanding chart facts",
+        "uses domain-centered output with soul identity, past-life archetypes, this-life contracts, patterns, gifts, relationships, career, and practices",
+        "opens with a symbolic disclaimer and body-response prompt",
+        "uses numerology only as a supplemental arithmetic layer"
+      ]
+    },
+    {
+      "prompt": "我觉得你的初版不准：我不是不会表达，我是表达了但传不到合适的人那里。",
+      "expected_mode": "feedback-refinement",
+      "expected_behavior": [
+        "treats the user's correction as refinement data",
+        "reframes the pattern from expression ability to reach, audience, distribution, or reception",
+        "keeps verified chart facts while revising the narrative thesis"
+      ]
+    },
+    {
+      "prompt": "只有姓名和生日，可以做一个今生课题的简版吗？",
+      "expected_mode": "partial",
+      "expected_behavior": [
+        "labels the reading as partial",
+        "does not infer 时柱, ascendant, houses, lagna, 紫微宫位, or timing cycles",
+        "keeps output reflective rather than chart-specific"
+      ]
+    }
+  ],
+  "negative": [
+    {
+      "prompt": "帮我写一个普通生日祝福文案。",
+      "expected_mode": "do-not-trigger",
+      "expected_behavior": [
+        "does not invoke chart calculation",
+        "does not ask for birth place or time",
+        "answers as a normal writing request"
+      ]
+    },
+    {
+      "prompt": "How does BaZi work?",
+      "expected_mode": "educational-no-reading",
+      "expected_behavior": [
+        "answers as an educational explanation",
+        "does not ask for birth time, birth place, or coordinates",
+        "does not run chart calculators or generate a personal reading"
+      ]
+    },
+    {
+      "prompt": "What's my horoscope for this week?",
+      "expected_mode": "do-not-trigger",
+      "expected_behavior": [
+        "does not invoke Akashic life-reading workflow",
+        "does not ask for full birth data unless the user requests a birth-chart reading",
+        "answers or redirects as a generic horoscope-style request without deterministic chart calculation"
+      ]
+    },
+    {
+      "prompt": "I want to book a session with an astrologer.",
+      "expected_mode": "do-not-trigger",
+      "expected_behavior": [
+        "does not invoke chart calculation",
+        "does not collect birth data",
+        "responds as a service-referral or scheduling-related request"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Vera Akashic Life Reading"
+  short_description: "Verified birth-chart to symbolic life lesson readings."
+  brand_color: "#7C3AED"
+  default_prompt: "Use $vera-akashic-life-reading to create an Akashic-record-style life reading from verified 八字, 紫微斗数, 西占/星盘, 古占, 印占, numerology, or deterministic birth-chart outputs."
+policy:
+  allow_implicit_invocation: true
