@@ -1,1 +1,12 @@
+kerykeion>=5.12,<6
+PyJHora>=4.8,<5
 pyswisseph>=2.10,<3
+
+# PyJHora 4.8.5 imports these at runtime but does not currently declare them
+# in package metadata.
+geocoder>=1.38,<2
+geopy>=2.4,<3
+numpy>=1.26,<3
+requests>=2.32,<3
+timezonefinder>=6,<9
+pytz>=2024.2
