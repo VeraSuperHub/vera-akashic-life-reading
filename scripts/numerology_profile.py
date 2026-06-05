@@ -15,6 +15,8 @@ from pathlib import Path
 from typing import Any
 
 
+FIXTURE_PATH = Path(__file__).resolve().parent / "fixtures" / "synthetic_birth.json"
+
 MASTER_NUMBERS = {11, 22, 33}
 
 CORE_MEANINGS = {
@@ -42,11 +44,13 @@ def _parse_args() -> argparse.Namespace:
 
 def _read_payload(args: argparse.Namespace) -> dict[str, Any]:
     if args.self_test:
-        return {
-            "name": "Synthetic Test",
-            "birth_date": "2005-12-23",
-        }
-    text = Path(args.input).read_text(encoding="utf-8") if args.input else sys.stdin.read()
+        return json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
+    if args.input:
+        text = Path(args.input).read_text(encoding="utf-8")
+    else:
+        if sys.stdin.isatty():
+            raise ValueError("input JSON is required on stdin or via --input")
+        text = sys.stdin.read()
     payload = json.loads(text)
     if not isinstance(payload, dict):
         raise ValueError("input JSON must be an object")
@@ -119,7 +123,7 @@ def main() -> int:
     try:
         result = build_profile(_read_payload(args))
         if args.self_test:
-            if result["numerology"]["life_path"]["reduced"] != 6:
+            if result["numerology"]["life_path"]["reduced"] != 8:
                 raise RuntimeError("self-test mismatch")
     except Exception as exc:
         print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False, indent=2))

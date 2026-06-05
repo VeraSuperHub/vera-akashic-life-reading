@@ -1,0 +1,13 @@
+{
+  "name": "Synthetic Test",
+  "calendar": "solar",
+  "birth_date": "2000-08-16",
+  "birth_time": "03:30",
+  "gender": "male",
+  "language": "zh-CN",
+  "timezone": "+08:00",
+  "latitude": 39.9042,
+  "longitude": 116.4074,
+  "systems": ["western", "traditional", "vedic"],
+  "target_years": [2026]
+}

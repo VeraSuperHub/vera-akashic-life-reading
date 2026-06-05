@@ -8,14 +8,18 @@ interpretation text.
 from __future__ import annotations
 
 import argparse
-import itertools
+import io
 import json
 import sys
+from contextlib import redirect_stdout
 from datetime import datetime, timedelta, timezone
+from importlib import metadata
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
+
+FIXTURE_PATH = Path(__file__).resolve().parent / "fixtures" / "synthetic_birth.json"
 
 SIGNS = [
     ("Aries", "白羊"),
@@ -48,17 +52,6 @@ PLANETS = [
 
 TRADITIONAL_PLANETS = {"Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn"}
 
-VEDIC_PLANETS = [
-    ("Sun", "太阳", "SUN"),
-    ("Moon", "月亮", "MOON"),
-    ("Mercury", "水星", "MERCURY"),
-    ("Venus", "金星", "VENUS"),
-    ("Mars", "火星", "MARS"),
-    ("Jupiter", "木星", "JUPITER"),
-    ("Saturn", "土星", "SATURN"),
-    ("Rahu", "罗睺", "TRUE_NODE"),
-]
-
 NAKSHATRAS = [
     ("Ashwini", "Ketu"),
     ("Bharani", "Venus"),
@@ -88,19 +81,6 @@ NAKSHATRAS = [
     ("Uttara Bhadrapada", "Saturn"),
     ("Revati", "Mercury"),
 ]
-
-VIMSHOTTARI_SEQUENCE = ["Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury"]
-VIMSHOTTARI_YEARS = {
-    "Ketu": 7,
-    "Venus": 20,
-    "Sun": 6,
-    "Moon": 10,
-    "Mars": 7,
-    "Rahu": 18,
-    "Jupiter": 16,
-    "Saturn": 19,
-    "Mercury": 17,
-}
 
 SIGN_INDEX = {name: index for index, (name, _label) in enumerate(SIGNS)}
 PLANET_LABELS = {name: label for name, label, _constant_name in PLANETS}
@@ -174,38 +154,158 @@ PLANET_SECT = {
     "Mercury": "variable",
 }
 
+HOUSE_NAME_TO_NUMBER = {
+    "First_House": 1,
+    "Second_House": 2,
+    "Third_House": 3,
+    "Fourth_House": 4,
+    "Fifth_House": 5,
+    "Sixth_House": 6,
+    "Seventh_House": 7,
+    "Eighth_House": 8,
+    "Ninth_House": 9,
+    "Tenth_House": 10,
+    "Eleventh_House": 11,
+    "Twelfth_House": 12,
+}
 
-def _load_swisseph():
+HOUSE_ATTRS = [
+    "first_house",
+    "second_house",
+    "third_house",
+    "fourth_house",
+    "fifth_house",
+    "sixth_house",
+    "seventh_house",
+    "eighth_house",
+    "ninth_house",
+    "tenth_house",
+    "eleventh_house",
+    "twelfth_house",
+]
+
+KERYKEION_PLANETS = [
+    ("Sun", "太阳", "sun"),
+    ("Moon", "月亮", "moon"),
+    ("Mercury", "水星", "mercury"),
+    ("Venus", "金星", "venus"),
+    ("Mars", "火星", "mars"),
+    ("Jupiter", "木星", "jupiter"),
+    ("Saturn", "土星", "saturn"),
+    ("Uranus", "天王星", "uranus"),
+    ("Neptune", "海王星", "neptune"),
+    ("Pluto", "冥王星", "pluto"),
+    ("True Node", "北交点", "true_north_lunar_node"),
+]
+
+KERYKEION_ACTIVE_POINTS = [
+    "Sun",
+    "Moon",
+    "Mercury",
+    "Venus",
+    "Mars",
+    "Jupiter",
+    "Saturn",
+    "Uranus",
+    "Neptune",
+    "Pluto",
+    "True_North_Lunar_Node",
+    "Ascendant",
+    "Medium_Coeli",
+    "Pars_Fortunae",
+    "Pars_Spiritus",
+]
+
+KERYKEION_NAME_ALIASES = {
+    "True_North_Lunar_Node": "True Node",
+    "Mean_North_Lunar_Node": "Mean Node",
+    "Pars_Fortunae": "Part of Fortune",
+    "Pars_Spiritus": "Part of Spirit",
+}
+
+ASPECT_LABELS = {
+    "conjunction": "合相",
+    "sextile": "六合",
+    "square": "刑相",
+    "trine": "拱相",
+    "opposition": "冲相",
+}
+
+VEDIC_PLANET_LABELS = {
+    "L": ("Lagna", "上升"),
+    0: ("Sun", "太阳"),
+    1: ("Moon", "月亮"),
+    2: ("Mars", "火星"),
+    3: ("Mercury", "水星"),
+    4: ("Jupiter", "木星"),
+    5: ("Venus", "金星"),
+    6: ("Saturn", "土星"),
+    7: ("Rahu", "罗睺"),
+    8: ("Ketu", "计都"),
+    9: ("Uranus", "天王星"),
+    10: ("Neptune", "海王星"),
+    11: ("Pluto", "冥王星"),
+}
+
+
+def _load_kerykeion():
     try:
-        import swisseph as swe
+        from kerykeion import AspectsFactory, AstrologicalSubjectFactory
     except ModuleNotFoundError as exc:
         raise RuntimeError(
-            "Missing dependency: swisseph/pyswisseph. Install scripts/requirements-astro.txt "
-            "or provide verified astrology/古占/印占 data manually."
+            "Missing dependency: kerykeion. Install scripts/requirements-astro.txt "
+            "or provide verified Western/古占 chart data manually."
         ) from exc
-    return swe
+    try:
+        version = metadata.version("kerykeion")
+    except metadata.PackageNotFoundError:
+        version = "unknown"
+    return AstrologicalSubjectFactory, AspectsFactory, version
+
+
+def _load_pyjhora():
+    try:
+        with redirect_stdout(io.StringIO()):
+            from jhora import const, utils
+            from jhora.horoscope.chart import charts
+            from jhora.horoscope.dhasa.graha import vimsottari
+            from jhora.panchanga import drik
+    except ModuleNotFoundError as exc:
+        raise RuntimeError(
+            "Missing dependency for PyJHora: "
+            f"{exc.name}. Install scripts/requirements-astro.txt or provide verified 印占/Jyotish data manually."
+        ) from exc
+    except TypeError as exc:
+        if sys.version_info < (3, 10):
+            raise RuntimeError(
+                "PyJHora requires Python 3.10 or newer. Run this helper with a newer Python "
+                "or provide verified 印占/Jyotish data manually."
+            ) from exc
+        raise RuntimeError(f"Could not import PyJHora: {exc}") from exc
+    try:
+        version = metadata.version("PyJHora")
+    except metadata.PackageNotFoundError:
+        version = "unknown"
+    return const, utils, charts, vimsottari, drik, version
 
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Calculate normalized astrology JSON.")
     parser.add_argument("--input", help="Path to input JSON. Reads stdin when omitted.")
     parser.add_argument("--self-test", action="store_true", help="Run a synthetic chart calculation.")
+    parser.add_argument("--check-deps", action="store_true", help="Check if astrology dependencies are available without calculating.")
     return parser.parse_args()
 
 
 def _read_payload(args: argparse.Namespace) -> dict[str, Any]:
     if args.self_test:
-        return {
-            "calendar": "solar",
-            "birth_date": "2000-08-16",
-            "birth_time": "03:30",
-            "timezone": "+08:00",
-            "latitude": 39.9042,
-            "longitude": 116.4074,
-            "systems": ["western", "vedic", "traditional"],
-            "target_years": [2026],
-        }
-    text = Path(args.input).read_text(encoding="utf-8") if args.input else sys.stdin.read()
+        return json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
+    if args.input:
+        text = Path(args.input).read_text(encoding="utf-8")
+    else:
+        if sys.stdin.isatty():
+            raise ValueError("input JSON is required on stdin or via --input")
+        text = sys.stdin.read()
     payload = json.loads(text)
     if not isinstance(payload, dict):
         raise ValueError("input JSON must be an object")
@@ -257,9 +357,26 @@ def _coordinates(payload: dict[str, Any]) -> tuple[float, float]:
     return float(lat), float(lon)
 
 
-def _julian_day_utc(swe: Any, dt_utc: datetime) -> float:
-    hour = dt_utc.hour + dt_utc.minute / 60 + dt_utc.second / 3600 + dt_utc.microsecond / 3_600_000_000
-    return swe.julday(dt_utc.year, dt_utc.month, dt_utc.day, hour, swe.GREG_CAL)
+def _timezone_is_fixed_offset(value: Any) -> bool:
+    if value is None:
+        return False
+    text = str(value).strip()
+    if not text:
+        return False
+    return text.upper().startswith("UTC") or text in {"Z", "+00:00", "-00:00"} or text[0] in {"+", "-"}
+
+
+def _kerykeion_birth_args(local_dt: datetime, timezone_value: Any) -> tuple[datetime, str]:
+    if _timezone_is_fixed_offset(timezone_value):
+        return local_dt.astimezone(timezone.utc).replace(tzinfo=None), "UTC"
+    return local_dt.replace(tzinfo=None), str(timezone_value).strip()
+
+
+def _timezone_offset_hours(local_dt: datetime) -> float:
+    offset = local_dt.utcoffset()
+    if offset is None:
+        raise ValueError("timezone offset could not be resolved for Vedic calculation")
+    return offset.total_seconds() / 3600
 
 
 def _format_degree(lon: float) -> dict[str, Any]:
@@ -286,6 +403,44 @@ def _format_degree(lon: float) -> dict[str, Any]:
         "second": second,
         "display": f"{sign_cn} {deg:02d}°{minute:02d}'{second:02d}\"",
     }
+
+
+def _house_number(value: Any) -> int | None:
+    if value is None:
+        return None
+    if isinstance(value, int):
+        return value
+    return HOUSE_NAME_TO_NUMBER.get(str(value))
+
+
+def _kerykeion_point_position(point: Any) -> dict[str, Any]:
+    return _format_degree(float(point.abs_pos))
+
+
+def _kerykeion_planet_record(point: Any, name: str, label: str, cusps: list[float]) -> dict[str, Any]:
+    position = _kerykeion_point_position(point)
+    return {
+        "name": name,
+        "label": label,
+        "position": position,
+        "house": _house_number(getattr(point, "house", None)) or _house_of(position["longitude"], cusps),
+        "retrograde": bool(getattr(point, "retrograde", False)),
+        "essential_dignity": _essential_dignity(name, position["sign"]),
+    }
+
+
+def _kerykeion_lot_record(point: Any, name: str) -> dict[str, Any]:
+    position = _kerykeion_point_position(point)
+    return {
+        "name": name,
+        "position": position,
+        "house": _house_number(getattr(point, "house", None)),
+        "calculation_note": "Calculated by Kerykeion from the configured tropical chart settings.",
+    }
+
+
+def _aspect_name(value: str) -> str:
+    return KERYKEION_NAME_ALIASES.get(value, value.replace("_", " "))
 
 
 def _interval_contains(x: float, a: float, b: float) -> bool:
@@ -447,25 +602,6 @@ def _house_ruler_concentrations(planets: list[dict[str, Any]]) -> list[dict[str,
     return sorted(concentrations, key=lambda item: (-item["count"], item["house"]))
 
 
-def _part_of_fortune(asc_lon: float, sun_lon: float, moon_lon: float, sun_house: int | None, cusps: list[float]) -> dict[str, Any]:
-    is_day_chart = sun_house in {7, 8, 9, 10, 11, 12}
-    if is_day_chart:
-        fortune_lon = asc_lon + moon_lon - sun_lon
-        formula = "Ascendant + Moon - Sun"
-        sect = "day"
-    else:
-        fortune_lon = asc_lon + sun_lon - moon_lon
-        formula = "Ascendant + Sun - Moon"
-        sect = "night"
-    return {
-        "position": _format_degree(fortune_lon),
-        "house": _house_of(fortune_lon, cusps),
-        "sect": sect,
-        "formula": formula,
-        "calculation_note": "Sect is approximated from the Sun's calculated house: houses 7-12 are treated as above horizon.",
-    }
-
-
 def _lot_position(name: str, asc_lon: float, sun_lon: float, moon_lon: float, sect: str, lagna_lon: float) -> dict[str, Any]:
     if name == "fortune":
         if sect == "day":
@@ -521,41 +657,62 @@ def _annual_profections(birth_local: datetime, targets: list[datetime], houses: 
     return rows
 
 
-def _planet_constant(swe: Any, name: str) -> int:
-    return getattr(swe, name)
-
-
-def _western_chart(
-    swe: Any,
-    jd: float,
-    lat: float,
-    lon: float,
-    house_system: str,
-    sign_boundary_degrees: float = 1.0,
-    house_cusp_degrees: float = 2.0,
-) -> dict[str, Any]:
-    cusps, ascmc = swe.houses(jd, lat, lon, house_system.encode("ascii"))
-    cusp_list = list(cusps)
-    planets = []
-    positions: dict[str, float] = {}
-    for name, label, constant_name in PLANETS:
-        xx, _flag = swe.calc_ut(jd, _planet_constant(swe, constant_name))
-        ecl_lon, _lat, _dist, speed = xx[:4]
-        formatted_position = _format_degree(ecl_lon)
-        positions[name] = ecl_lon
-        planets.append(
+def _kerykeion_aspects(subject: Any, aspects_factory: Any) -> list[dict[str, Any]]:
+    aspects = aspects_factory.single_chart_aspects(
+        subject,
+        active_points=[
+            "Sun",
+            "Moon",
+            "Mercury",
+            "Venus",
+            "Mars",
+            "Jupiter",
+            "Saturn",
+            "Uranus",
+            "Neptune",
+            "Pluto",
+            "True_North_Lunar_Node",
+        ],
+    )
+    records = []
+    for aspect in aspects.aspects:
+        data = aspect.model_dump()
+        angle = int(data.get("aspect_degrees") or 0)
+        if angle not in {0, 60, 90, 120, 180}:
+            continue
+        aspect_name = str(data.get("aspect") or "").lower()
+        raw_diff = abs(float(data.get("diff") or 0)) % 360
+        separation = min(raw_diff, 360 - raw_diff)
+        records.append(
             {
-                "name": name,
-                "label": label,
-                "position": formatted_position,
-                "house": _house_of(ecl_lon, cusp_list),
-                "retrograde": speed < 0,
-                "essential_dignity": _essential_dignity(name, formatted_position["sign"]),
+                "from": _aspect_name(str(data.get("p1_name"))),
+                "to": _aspect_name(str(data.get("p2_name"))),
+                "aspect": aspect_name,
+                "label": ASPECT_LABELS.get(aspect_name),
+                "angle": angle,
+                "separation": round(separation, 4),
+                "orb": round(abs(float(data.get("orbit") or 0)), 4),
+                "movement": data.get("aspect_movement"),
             }
         )
+    return records
+
+
+def _kerykeion_western_chart(
+    subject: Any,
+    aspects_factory: Any,
+    house_system: str,
+    sign_boundary_degrees: float,
+    house_cusp_degrees: float,
+) -> dict[str, Any]:
+    cusp_list = [float(getattr(subject, attr).abs_pos) for attr in HOUSE_ATTRS]
+    planets = [
+        _kerykeion_planet_record(getattr(subject, attr), name, label, cusp_list)
+        for name, label, attr in KERYKEION_PLANETS
+    ]
 
     houses = []
-    rules_by_planet: dict[str, list[int]] = {name: [] for name, _label, _constant_name in PLANETS}
+    rules_by_planet: dict[str, list[int]] = {name: [] for name, _label, _attr in KERYKEION_PLANETS}
     for index, cusp in enumerate(cusp_list):
         cusp_position = _format_degree(cusp)
         ruler = TRADITIONAL_RULERS.get(cusp_position["sign"])
@@ -575,29 +732,21 @@ def _western_chart(
     for planet in planets:
         planet["rules_houses"] = rules_by_planet.get(planet["name"], [])
 
-    aspects = []
-    aspect_defs = [("conjunction", "合相", 0, 8), ("sextile", "六合", 60, 4), ("square", "刑相", 90, 6), ("trine", "拱相", 120, 6), ("opposition", "冲相", 180, 8)]
-    for a, b in itertools.combinations(positions, 2):
-        sep = abs((positions[a] - positions[b] + 180) % 360 - 180)
-        hits = [(abs(sep - angle), name, label, angle) for name, label, angle, orb in aspect_defs if abs(sep - angle) <= orb]
-        if hits:
-            diff, name, label, angle = sorted(hits)[0]
-            aspects.append({"from": a, "to": b, "aspect": name, "label": label, "angle": angle, "separation": round(sep, 4), "orb": round(diff, 4)})
-
-    sun_house = _house_of(positions["Sun"], cusp_list)
     angles = {
-        "ascendant": _format_degree(ascmc[0]),
-        "midheaven": _format_degree(ascmc[1]),
+        "ascendant": _kerykeion_point_position(subject.ascendant),
+        "midheaven": _kerykeion_point_position(subject.medium_coeli),
     }
     return {
         "zodiac": "tropical",
         "house_system": house_system,
+        "engine": "kerykeion",
         "angles": angles,
         "houses": houses,
         "planets": planets,
-        "major_aspects": aspects,
+        "major_aspects": _kerykeion_aspects(subject, aspects_factory),
         "lots": {
-            "part_of_fortune": _part_of_fortune(ascmc[0], positions["Sun"], positions["Moon"], sun_house, cusp_list),
+            "part_of_fortune": _kerykeion_lot_record(subject.pars_fortunae, "part_of_fortune"),
+            "part_of_spirit": _kerykeion_lot_record(subject.pars_spiritus, "part_of_spirit"),
         },
         "analysis": {
             "house_ruler_concentrations": _house_ruler_concentrations(planets),
@@ -726,26 +875,6 @@ def _whole_sign_house(lon: float, lagna_lon: float) -> int:
     return ((body_sign - lagna_sign) % 12) + 1
 
 
-def _vimshottari(dt_utc: datetime, moon_lon: float) -> dict[str, Any]:
-    nak = _nakshatra(moon_lon)
-    lord = nak["lord"]
-    segment = 360 / 27
-    fraction_used = nak["offset_degrees"] / segment
-    remaining_years = (1 - fraction_used) * VIMSHOTTARI_YEARS[lord]
-    lord_index = VIMSHOTTARI_SEQUENCE.index(lord)
-    start = dt_utc
-    end = start + timedelta(days=remaining_years * 365.2425)
-    periods = [{"lord": lord, "start": start.date().isoformat(), "end": end.date().isoformat(), "years": round(remaining_years, 4), "balance_at_birth": True}]
-    current = end
-    for step in range(1, 10):
-        next_lord = VIMSHOTTARI_SEQUENCE[(lord_index + step) % len(VIMSHOTTARI_SEQUENCE)]
-        years = VIMSHOTTARI_YEARS[next_lord]
-        next_end = current + timedelta(days=years * 365.2425)
-        periods.append({"lord": next_lord, "start": current.date().isoformat(), "end": next_end.date().isoformat(), "years": years})
-        current = next_end
-    return {"system": "vimshottari", "moon_nakshatra": nak, "mahadasha_sequence": periods}
-
-
 def _target_dates(payload: dict[str, Any]) -> list[datetime]:
     dates = []
     for value in payload.get("target_dates") or []:
@@ -766,48 +895,119 @@ def _active_dasha(periods: list[dict[str, Any]], target: datetime) -> dict[str, 
     return None
 
 
-def _vedic_chart(swe: Any, jd: float, dt_utc: datetime, asc_tropical: float) -> dict[str, Any]:
-    swe.set_sid_mode(swe.SIDM_LAHIRI)
-    ayanamsa = swe.get_ayanamsa_ut(jd)
-    sidereal_asc = (asc_tropical - ayanamsa) % 360
-    flags = swe.FLG_SWIEPH | swe.FLG_SIDEREAL
-    planets = []
+def _pyjhora_jd_from_tuple(utils: Any, drik: Any, value: tuple[int, int, int, float]) -> float:
+    year, month, day, fractional_hour = value
+    return utils.julian_day_number(drik.Date(year, month, day), (fractional_hour, 0, 0))
+
+
+def _pyjhora_date_tuple_to_iso(value: tuple[int, int, int, float]) -> str:
+    year, month, day, _fractional_hour = value
+    return f"{int(year):04d}-{int(month):02d}-{int(day):02d}"
+
+
+def _pyjhora_lord_name(lord: Any) -> str:
+    return VEDIC_PLANET_LABELS.get(lord, (str(lord), str(lord)))[0]
+
+
+def _pyjhora_dasha(utils: Any, const: Any, drik: Any, vimsottari: Any, jd: float, place: Any, moon_nakshatra: dict[str, Any]) -> dict[str, Any]:
+    balance, rows = vimsottari.get_vimsottari_dhasa_bhukthi(
+        jd,
+        place,
+        dhasa_level_index=const.MAHA_DHASA_DEPTH.MAHA_DHASA_ONLY,
+    )
+    periods = []
+    for index, row in enumerate(rows):
+        lords, start_tuple, duration_years = row
+        start_tuple = tuple(start_tuple)
+        if index + 1 < len(rows):
+            end_tuple = tuple(rows[index + 1][1])
+        else:
+            start_jd = _pyjhora_jd_from_tuple(utils, drik, start_tuple)
+            end_tuple = tuple(utils.jd_to_gregorian(start_jd + float(duration_years) * const.sidereal_year))
+        lord_ids = list(lords if isinstance(lords, tuple) else (lords,))
+        periods.append(
+            {
+                "lord": _pyjhora_lord_name(lord_ids[-1]),
+                "lord_ids": lord_ids,
+                "start": _pyjhora_date_tuple_to_iso(start_tuple),
+                "end": _pyjhora_date_tuple_to_iso(end_tuple),
+                "years": round(float(duration_years), 4),
+            }
+        )
+    return {
+        "system": "vimshottari",
+        "source": "PyJHora",
+        "balance_at_birth": {
+            "years": balance[0],
+            "months": balance[1],
+            "days": balance[2],
+        },
+        "moon_nakshatra": moon_nakshatra,
+        "mahadasha_sequence": periods,
+    }
+
+
+def _pyjhora_vedic_chart(
+    local_naive: datetime,
+    timezone_offset_hours: float,
+    lat: float,
+    lon: float,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    const, utils, charts, vimsottari, drik, _version = _load_pyjhora()
+    ayanamsa_mode = str(payload.get("ayanamsa") or payload.get("vedic_ayanamsa") or "LAHIRI").upper()
+    place_name = str(payload.get("birth_place") or payload.get("place") or "birthplace")
+    place = drik.Place(place_name, lat, lon, timezone_offset_hours)
+
+    with redirect_stdout(io.StringIO()):
+        utils.set_language("en")
+        drik.set_ayanamsa_mode(ayanamsa_mode)
+        drik.set_planet_list(set_rahu_ketu_as_true_nodes=True, include_western_planets=False)
+        jd = utils.julian_day_number(
+            drik.Date(local_naive.year, local_naive.month, local_naive.day),
+            (local_naive.hour, local_naive.minute, local_naive.second),
+        )
+        planet_positions = charts.rasi_chart(jd, place)
+        retrograde_planets = set(drik.planets_in_retrograde(jd, place))
+        ayanamsa_degrees = drik.get_ayanamsa_value(jd)
+
+    lagna_record = next((item for item in planet_positions if item[0] == "L"), None)
+    if lagna_record is None:
+        raise RuntimeError("PyJHora did not return a lagna record")
+    lagna_lon = lagna_record[1][0] * 30 + lagna_record[1][1]
     moon_lon = None
-    for name, label, constant_name in VEDIC_PLANETS:
-        xx, _flag = swe.calc_ut(jd, _planet_constant(swe, constant_name), flags)
-        ecl_lon, _lat, _dist, speed = xx[:4]
+    planets = []
+    for planet_id, (sign_index, sign_degree) in planet_positions:
+        absolute_lon = sign_index * 30 + sign_degree
+        if planet_id == "L":
+            continue
+        name, label = VEDIC_PLANET_LABELS.get(planet_id, (str(planet_id), str(planet_id)))
         if name == "Moon":
-            moon_lon = ecl_lon
+            moon_lon = absolute_lon
         planets.append(
             {
                 "name": name,
                 "label": label,
-                "position": _format_degree(ecl_lon),
-                "nakshatra": _nakshatra(ecl_lon),
-                "whole_sign_house": _whole_sign_house(ecl_lon, sidereal_asc),
-                "retrograde": speed < 0,
+                "position": _format_degree(absolute_lon),
+                "nakshatra": _nakshatra(absolute_lon),
+                "whole_sign_house": _whole_sign_house(absolute_lon, lagna_lon),
+                "retrograde": planet_id in retrograde_planets,
             }
         )
-        if name == "Rahu":
-            ketu_lon = (ecl_lon + 180) % 360
-            planets.append(
-                {
-                    "name": "Ketu",
-                    "label": "计都",
-                    "position": _format_degree(ketu_lon),
-                    "nakshatra": _nakshatra(ketu_lon),
-                    "whole_sign_house": _whole_sign_house(ketu_lon, sidereal_asc),
-                    "retrograde": speed < 0,
-                }
-            )
+
     if moon_lon is None:
         raise RuntimeError("Moon longitude unavailable; cannot calculate Vimshottari dasha")
-    dasha = _vimshottari(dt_utc, moon_lon)
+
+    moon_nakshatra = _nakshatra(moon_lon)
+    with redirect_stdout(io.StringIO()):
+        dasha = _pyjhora_dasha(utils, const, drik, vimsottari, jd, place, moon_nakshatra)
+
     return {
         "zodiac": "sidereal",
-        "ayanamsa": "Lahiri",
-        "ayanamsa_degrees": round(ayanamsa, 6),
-        "lagna": _format_degree(sidereal_asc),
+        "engine": "PyJHora",
+        "ayanamsa": ayanamsa_mode.title() if ayanamsa_mode == "LAHIRI" else ayanamsa_mode,
+        "ayanamsa_degrees": round(ayanamsa_degrees, 6),
+        "lagna": _format_degree(lagna_lon),
         "house_model": "whole_sign_from_lagna",
         "planets": planets,
         "dasha": dasha,
@@ -815,26 +1015,26 @@ def _vedic_chart(swe: Any, jd: float, dt_utc: datetime, asc_tropical: float) -> 
 
 
 def build_profile(payload: dict[str, Any]) -> dict[str, Any]:
-    swe = _load_swisseph()
     local_naive = _parse_date_time(payload)
     tz = _parse_timezone(payload.get("timezone"))
     local_dt = local_naive.replace(tzinfo=tz)
     dt_utc = local_dt.astimezone(timezone.utc)
     lat, lon = _coordinates(payload)
-    jd = _julian_day_utc(swe, dt_utc)
     systems = {str(item).lower() for item in payload.get("systems", ["western", "vedic"])}
     house_system = str(payload.get("house_system", "P"))
     sign_boundary_degrees = float(payload.get("sign_boundary_degrees", 1.0))
     house_cusp_degrees = float(payload.get("house_cusp_degrees", 2.0))
+    wants_western = bool({"western", "tropical"} & systems)
+    wants_traditional = bool({"traditional", "hellenistic", "ancient", "古占"} & systems)
+    wants_vedic = bool({"vedic", "jyotish", "indian", "印占"} & systems)
 
     result: dict[str, Any] = {
         "ok": True,
         "mode": "astrology-calculator",
         "engine": {
-            "name": "pyswisseph",
-            "version": getattr(swe, "version", "unknown"),
-            "upstream": "https://www.astro.com/swisseph/",
-            "license_note": "Swiss Ephemeris is AGPL/commercial; confirm license before product use.",
+            "name": "split_astrology",
+            "western": None,
+            "vedic": None,
         },
         "input": {
             "birth_date": payload.get("birth_date"),
@@ -843,40 +1043,162 @@ def build_profile(payload: dict[str, Any]) -> dict[str, Any]:
             "latitude": lat,
             "longitude": lon,
             "utc": dt_utc.isoformat(),
-            "julian_day_ut": jd,
             "sign_boundary_degrees": sign_boundary_degrees,
             "house_cusp_degrees": house_cusp_degrees,
         },
+        "unavailable_systems": [],
         "calculation_notes": [
-            "Western chart uses tropical zodiac and the requested house system.",
+            "Western/西占 chart uses Kerykeion with tropical zodiac and the requested house system.",
             "Western essential dignity and house rulership use the traditional seven-planet ruler scheme; outer planets and nodes are not assigned rulership by this helper.",
-            "Part of Fortune is calculated from sect using Ascendant, Sun, and Moon; verify school-specific lot formulas when precision matters.",
+            "Western lots are returned by Kerykeion; verify school-specific lot formulas when precision matters.",
             "Sign and house labels are categorical summaries of continuous longitudes; boundary-sensitive placements should be confirmed before interpretation.",
             "Traditional/古占 output uses whole-sign houses, sect, traditional seven-planet rulership, lots, and annual profections when requested.",
-            "Vedic-style chart uses Lahiri sidereal zodiac, true node, whole-sign houses from lagna, and approximate Vimshottari mahadasha from Moon nakshatra.",
+            "Vedic/印占 chart uses PyJHora with the configured sidereal ayanamsa, true node, whole-sign houses from lagna, and PyJHora Vimshottari mahadasha.",
+            "Kerykeion, PyJHora, and Swiss Ephemeris/pyswisseph have copyleft/commercial licensing considerations; confirm the license path before product or hosted use.",
             "No geocoding is performed; latitude and longitude must be supplied by the caller.",
         ],
     }
 
     targets = _target_dates(payload)
-    western_for_asc = _western_chart(swe, jd, lat, lon, house_system, sign_boundary_degrees, house_cusp_degrees)
-    if "western" in systems or "tropical" in systems:
-        result["western_tropical"] = western_for_asc
-    if "traditional" in systems or "hellenistic" in systems or "ancient" in systems or "古占" in systems:
-        result["traditional_western"] = _traditional_western_chart(western_for_asc, local_naive, targets)
-    if "vedic" in systems or "jyotish" in systems or "indian" in systems or "印占" in systems:
-        vedic = _vedic_chart(swe, jd, dt_utc, western_for_asc["angles"]["ascendant"]["longitude"])
-        target_blocks = []
-        for target in targets:
-            target_blocks.append({"target_date": target.date().isoformat(), "active_mahadasha": _active_dasha(vedic["dasha"]["mahadasha_sequence"], target)})
-        if target_blocks:
-            vedic["targets"] = target_blocks
-        result["vedic_sidereal"] = vedic
+    western_for_traditional = None
+    if wants_western or wants_traditional:
+        try:
+            subject_factory, aspects_factory, kerykeion_version = _load_kerykeion()
+            kerykeion_dt, kerykeion_tz = _kerykeion_birth_args(local_dt, payload.get("timezone"))
+            subject = subject_factory.from_birth_data(
+                str(payload.get("name") or "Native"),
+                kerykeion_dt.year,
+                kerykeion_dt.month,
+                kerykeion_dt.day,
+                kerykeion_dt.hour,
+                kerykeion_dt.minute,
+                lng=lon,
+                lat=lat,
+                tz_str=kerykeion_tz,
+                online=False,
+                zodiac_type="Tropical",
+                houses_system_identifier=house_system,
+                active_points=KERYKEION_ACTIVE_POINTS,
+                seconds=kerykeion_dt.second,
+                suppress_geonames_warning=True,
+            )
+            result["engine"]["western"] = {
+                "name": "kerykeion",
+                "version": kerykeion_version,
+                "upstream": "https://github.com/g-battaglia/kerykeion",
+                "license": "AGPL-3.0",
+                "ephemeris_dependency": "pyswisseph / Swiss Ephemeris",
+            }
+            result["input"]["kerykeion_timezone"] = kerykeion_tz
+            western_for_traditional = _kerykeion_western_chart(
+                subject,
+                aspects_factory,
+                house_system,
+                sign_boundary_degrees,
+                house_cusp_degrees,
+            )
+            if wants_western:
+                result["western_tropical"] = western_for_traditional
+            if wants_traditional:
+                result["traditional_western"] = _traditional_western_chart(western_for_traditional, local_naive, targets)
+        except Exception as exc:
+            affected = []
+            if wants_western:
+                affected.append("western")
+            if wants_traditional:
+                affected.append("traditional")
+            result["unavailable_systems"].append({"systems": affected, "engine": "kerykeion", "error": str(exc)})
+
+    if wants_vedic:
+        try:
+            _const, _utils, _charts, _vimsottari, _drik, pyjhora_version = _load_pyjhora()
+            result["engine"]["vedic"] = {
+                "name": "PyJHora",
+                "version": pyjhora_version,
+                "upstream": "https://github.com/naturalstupid/PyJHora",
+                "license": "AGPL-3.0",
+                "ephemeris_dependency": "pyswisseph / Swiss Ephemeris",
+            }
+            vedic = _pyjhora_vedic_chart(local_naive, _timezone_offset_hours(local_dt), lat, lon, payload)
+            target_blocks = []
+            for target in targets:
+                target_blocks.append({"target_date": target.date().isoformat(), "active_mahadasha": _active_dasha(vedic["dasha"]["mahadasha_sequence"], target)})
+            if target_blocks:
+                vedic["targets"] = target_blocks
+            result["vedic_sidereal"] = vedic
+        except Exception as exc:
+            result["unavailable_systems"].append({"systems": ["vedic"], "engine": "PyJHora", "error": str(exc)})
+
+    produced = any(key in result for key in ("western_tropical", "traditional_western", "vedic_sidereal"))
+    if not produced:
+        errors = "; ".join(
+            f"{','.join(item['systems'])}: {item['error']}" for item in result["unavailable_systems"]
+        )
+        raise RuntimeError(f"No requested astrology systems are available. {errors}".strip())
+    return result
+
+
+def _check_deps() -> dict[str, Any]:
+    """Quick dependency probe — import-check only, no calculation."""
+    result: dict[str, Any] = {
+        "ok": True,
+        "python_version": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
+        "python_310_plus": sys.version_info >= (3, 10),
+        "kerykeion": False,
+        "kerykeion_version": None,
+        "pyjhora": False,
+        "pyjhora_version": None,
+        "pyswisseph": False,
+    }
+    try:
+        import kerykeion  # noqa: F401
+        result["kerykeion"] = True
+        try:
+            result["kerykeion_version"] = metadata.version("kerykeion")
+        except metadata.PackageNotFoundError:
+            result["kerykeion_version"] = "unknown"
+    except ImportError:
+        result["ok"] = False
+
+    try:
+        import swisseph  # noqa: F401
+        result["pyswisseph"] = True
+    except ImportError:
+        result["ok"] = False
+
+    if sys.version_info >= (3, 10):
+        try:
+            from jhora.horoscope.chart import charts  # noqa: F401
+            result["pyjhora"] = True
+            try:
+                result["pyjhora_version"] = metadata.version("PyJHora")
+            except metadata.PackageNotFoundError:
+                result["pyjhora_version"] = "unknown"
+        except (ImportError, TypeError):
+            result["ok"] = False
+    else:
+        result["ok"] = False
+
+    if not result["ok"]:
+        missing = []
+        if not result["kerykeion"]:
+            missing.append("kerykeion")
+        if not result["pyswisseph"]:
+            missing.append("pyswisseph")
+        if not result["pyjhora"]:
+            missing.append("PyJHora")
+        if not result["python_310_plus"]:
+            missing.append("Python>=3.10")
+        result["error"] = f"Missing: {', '.join(missing)}. Install scripts/requirements-astro.txt or provide verified chart data manually."
     return result
 
 
 def main() -> int:
     args = _parse_args()
+    if args.check_deps:
+        deps = _check_deps()
+        print(json.dumps(deps, ensure_ascii=False, indent=2))
+        return 0 if deps["ok"] else 1
     try:
         result = build_profile(_read_payload(args))
         if args.self_test:

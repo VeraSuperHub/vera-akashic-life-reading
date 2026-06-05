@@ -14,6 +14,8 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 
+// Required shim: the vendored iztro file is a browser UMD build and expects
+// `self` to exist before require(). Recheck this if upgrading iztro.
 globalThis.self = globalThis;
 const iztro = require(resolve(__dirname, "vendor/iztro/iztro.min.js"));
 const iztroPackage = JSON.parse(readFileSync(resolve(__dirname, "vendor/iztro/package.json"), "utf8"));
@@ -36,13 +38,10 @@ function parseArgs(argv) {
 
 function readPayload(args) {
   if (args.selfTest) {
-    return {
-      calendar: "solar",
-      birth_date: "2000-08-16",
-      birth_time: "03:30",
-      gender: "male",
-      language: "zh-CN",
-    };
+    return JSON.parse(readFileSync(resolve(__dirname, "fixtures/synthetic_birth.json"), "utf8"));
+  }
+  if (!args.input && process.stdin.isTTY) {
+    throw new Error("input JSON is required on stdin or via --input");
   }
   const text = args.input ? readFileSync(args.input, "utf8") : readFileSync(0, "utf8");
   const payload = JSON.parse(text);
@@ -241,7 +240,21 @@ function main() {
     const args = parseArgs(process.argv);
     const result = buildProfile(readPayload(args));
     if (args.selfTest) {
-      if (result.ziwei.soul !== "破军" || result.ziwei.body !== "文昌" || result.ziwei.palaces.length !== 12) {
+      const soulPalace = result.ziwei.palaces.find((palace) => palace.name === "命宫");
+      const careerPalace = result.ziwei.palaces.find((palace) => palace.name === "官禄");
+      const wealthPalace = result.ziwei.palaces.find((palace) => palace.name === "财帛");
+      const soulMajor = soulPalace?.major_stars?.map((star) => star.name) || [];
+      const careerMajor = careerPalace?.major_stars?.map((star) => star.name) || [];
+      const wealthMajor = wealthPalace?.major_stars?.map((star) => star.name) || [];
+      if (
+        result.ziwei.soul !== "破军" ||
+        result.ziwei.body !== "文昌" ||
+        result.ziwei.palaces.length !== 12 ||
+        !soulMajor.includes("紫微") ||
+        !careerPalace?.is_body_palace ||
+        !careerMajor.includes("天府") ||
+        !wealthMajor.includes("武曲")
+      ) {
         throw new Error("self-test mismatch");
       }
     }

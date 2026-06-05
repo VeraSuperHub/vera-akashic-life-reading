@@ -20,6 +20,8 @@ VENDOR_DIR = Path(__file__).resolve().parent / "vendor"
 if (VENDOR_DIR / "lunar_python").is_dir():
     sys.path.insert(0, str(VENDOR_DIR))
 
+FIXTURE_PATH = Path(__file__).resolve().parent / "fixtures" / "synthetic_birth.json"
+
 
 STEM_ELEMENTS = {
     "甲": "木",
@@ -165,16 +167,12 @@ def _time_boundary_sensitivity(hour: int, minute: int, second: int, threshold_mi
 
 def _read_payload(args: argparse.Namespace) -> dict[str, Any]:
     if args.self_test:
-        return {
-            "name": "Synthetic Test",
-            "calendar": "solar",
-            "birth_date": "2005-12-23",
-            "birth_time": "08:37:00",
-            "gender": "male",
-        }
+        return json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
     if args.input:
         text = Path(args.input).read_text(encoding="utf-8")
     else:
+        if sys.stdin.isatty():
+            raise ValueError("input JSON is required on stdin or via --input")
         text = sys.stdin.read()
     try:
         payload = json.loads(text)
@@ -638,7 +636,7 @@ def main() -> int:
         print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False, indent=2))
         return 1
     if args.self_test:
-        expected = {"year": "乙酉", "month": "戊子", "day": "辛巳", "hour": "壬辰"}
+        expected = {"year": "庚辰", "month": "甲申", "day": "丙午", "hour": "庚寅"}
         if result["bazi"]["pillars"] != expected:
             print(json.dumps({"ok": False, "error": "self-test mismatch", "result": result}, ensure_ascii=False, indent=2))
             return 1
